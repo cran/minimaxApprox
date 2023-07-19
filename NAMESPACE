@@ -1,0 +1,9 @@
+export(minimaxApprox, minimaxEval, print.minimaxApprox, plot.minimaxApprox,
+       coef.minimaxApprox)
+
+importFrom("stats", "optimize", "uniroot")
+importFrom("graphics", "abline", "legend", "points")
+
+S3method(print, minimaxApprox)
+S3method(plot, minimaxApprox)
+S3method(coef, minimaxApprox)
