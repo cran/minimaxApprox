@@ -9,8 +9,8 @@
 
 \description{
 Calculates minimax approximations to functions. Polynomial approximation uses
-the Remez algorithm. Rational approximation uses a form of the Fraser-Hart
-version of the Remez algorithm.
+the Remez (1962) algorithm. Rational approximation uses the Cody-Fraser-Hart
+(Cody et al., 1968) version of the algorithm.
 }
 
 \usage{
@@ -19,8 +19,9 @@ minimaxApprox(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
 }
 
 \arguments{
-    \item{fn}{function; A vectorized univariate function having \strong{x} as
-    its first value.}
+    \item{fn}{function; A vectorized univariate function having \code{x} as its
+    first argument. This could be a built-in \R function, a predefined function,
+    or an anonymous function defined in the call; see \strong{Examples}.}
     \item{lower}{numeric; The lower bound of the approximation interval.}
     \item{upper}{numeric; The upper bound of the approximation interval.}
     \item{degree}{integer; Either a single value representing the requested
@@ -41,11 +42,11 @@ minimaxApprox(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
             attempt convergence. Defaults to 100.
             \item \code{miniter}:  integer; The minimum number of iterations
             before allowing convergence. Defaults to 10.
-            \item \code{conviter}: integer; For rational approximation only, the
-            number of successive iteration with the same results allowed before
-            assuming no further convergence is possible. Defaults to 10L. Will
-            overwrite \code{maxiter} if \code{conviter} is explicitly passed and
-            is larger than \code{maxiter}.
+            \item \code{conviter}: integer; The number of successive iterations
+            with the same results allowed before assuming no further convergence
+            is possible. Defaults to 10. Will overwrite \code{maxiter} if
+            \code{conviter} is explicitly passed and is larger than
+            \code{maxiter}.
             \item \code{showProgress}: logical; If \code{TRUE} will print error
             values at each iteration.
              \item \code{convRatio}: numeric; The convergence ratio tolerance.
@@ -58,8 +59,8 @@ minimaxApprox(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
 
 \details{
 The function implements the Remez algorithm using linear approximation, chiefly
-as described by Cody (1968). Convergence is considered achieved when all three
-of the following criteria are met:
+as described by Cody et al. (1968). Convergence is considered achieved when all
+three of the following criteria are met:
     \enumerate{
         \item The observed error magnitudes are within tolerance of the expected
          error (Distance Test).
@@ -77,7 +78,7 @@ of the following criteria are met:
 
 For efficiency, the Distance Test is taken between the absolute value of the
 largest observed error and the absolute value of the expected error. Similarly,
-the Magnitude test is taken between the absolute value of the largest observed
+the Magnitude Test is taken between the absolute value of the largest observed
 error and the absolute value of the smallest observed error. Both the Magnitude
 Test and the Distance Test can be passed by \strong{either} being within
 \code{tol} or \code{convRatio} as described above.
@@ -140,10 +141,12 @@ values and \code{\link[Pade:Pade]{Pade}} for a function to calculate
 }
 
 \examples{
-PP <- minimaxApprox(exp, 0, 1, 5)
-PP
-RR <- minimaxApprox(exp, 0, 1, c(2, 3))
-RR
+minimaxApprox(exp, 0, 1, 5)                              # Built-in & polynomial
+
+fn <- function(x) sin(x) ^ 2 + cosh(x)                   # Pre-defined
+minimaxApprox(exp, 0, 1, c(2, 3))                        # Rational
+
+minimaxApprox(function(x) x ^ 3 / sin(x), 0.7, 1.6, 6L)  # Anonymous
 }
 
 \keyword{optimize}

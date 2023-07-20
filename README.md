@@ -1,8 +1,6 @@
 <!-- badges: start -->
-<!-- Comment out for now
-[![](https://www.r-pkg.org/badges/version-last-release/Delaporte)](https://cran.r-project.org/package=Delaporte)
-[![](http://cranlogs.r-pkg.org/badges/last-month/Delaporte)](https://cran.r-project.org/package=Delaporte)
--->
+[![](https://www.r-pkg.org/badges/version-last-release/minimaxApprox)](https://cran.r-project.org/package=minimaxApprox)
+[![](http://cranlogs.r-pkg.org/badges/last-month/minimaxApprox)](https://cran.r-project.org/package=minimaxApprox)
  [![R-CMD-check](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/aadler/minimaxApprox/branch/master/graph/badge.svg)](https://app.codecov.io/gh/aadler/minimaxApprox?branch=master)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7580/badge)](https://bestpractices.coreinfrastructure.org/projects/7580)
@@ -10,9 +8,9 @@
 <!-- badges: end -->
 
 # minimaxApprox
-**minimaxApprox** is an `R` package which Implements the Remez algorithm for
-polynomial function approximation and a form of the Fraser-Hart version
-<doi:10.1007/BF02162506> for rational function approximation.
+**minimaxApprox** is an `R` package which implements the algorithm of Remez
+(1962) for polynomial minimax approximation and of Cody et al. (1968)
+<doi:10.1007/BF02162506> for rational minimax approximation.
 
 ## Citation
 If you use the package, please cite it as:
@@ -20,7 +18,7 @@ If you use the package, please cite it as:
   Adler A (2023). minimaxApprox: Implementation of Remez Algorithm for
   Polynomial and Rational Function Approximation.
   [doi: 10.5281/zenodo.8158855](https://doi.org/10.5281/zenodo.8158855),
-  R package version 0.0.1, https://CRAN.R-project.org/package=minimaxApprox
+  R package version 0.0.2, https://CRAN.R-project.org/package=minimaxApprox
 
 A BibTeX entry for LaTeX users is:
 
@@ -31,7 +29,7 @@ A BibTeX entry for LaTeX users is:
     year = {2023},
     url = {https://CRAN.R-project.org/package=minimaxApprox},
     doi = {10.5281/zenodo.8158855},
-    note = {R package version 0.0.1},
+    note = {R package version 0.0.2},
   }
 ```
 
