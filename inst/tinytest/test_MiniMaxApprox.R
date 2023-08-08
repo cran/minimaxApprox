@@ -31,9 +31,21 @@ expect_equal(RR$x, controlX, tolerance = 5e-5)
 expect_equal(RR$EE, controlE, tolerance = 5e-5)
 expect_false(RR$Warning)
 
+## Rational 3: Based on DLMF 3.11.19 https://dlmf.nist.gov/3.11#iii
+# Differnce on Windows machine is 8.15e-6
+controlA <- c(0.99999998917854, -0.34038938209347, -0.18915483763222,
+              0.06658319420166)
+controlB <- c(1, -0.34039052338838, 0.06086501629812, -0.01864476809090)
+fn <- function(x) besselJ(x, nu = 0)
+b0 <- 0.893576966279167522
+RR <- minimaxApprox(fn, 0, b0, c(3L, 3L))
+expect_equal(RR$a, controlA, tolerance = 1e-5)
+expect_equal(RR$b, controlB, tolerance = 1e-5)
+expect_false(RR$Warning)
+
 # Test trap for relErr
-errMess <- paste("Relative Error must be a logical value.",
-                  "Default FALSE returns absolute error")
+errMess <- paste("Relative Error must be a logical value. Default FALSE",
+                 "returns absolute error.")
 expect_error(minimaxApprox(fn, -1, 1, 9L, "abs"), errMess)
 
 # Test showProgress. Also tests passing miniter
@@ -67,15 +79,11 @@ expect_true(suppressWarnings(minimaxApprox(fn, -1, 1, dg, opts = opts)$Warning))
 
 # Test "very near machine double" warning message
 wrnMess <- paste("All errors very near machine double precision. The solution",
-                 "may not be optimal but should be best given the desired",
-                 "precision and floating point limitations. Try a lower degree",
-                 "if needed.")
+                 "may not be optimal given floating point limitations.")
 ## Polynomial
 fn <- function(x) sin(x) + cos(x)
 expect_warning(minimaxApprox(fn, -1, 1, 13L), wrnMess)
-## Rational
-fn <- function(x) exp(x) - 1
-expect_warning(minimaxApprox(fn, -0.15, 0.15, c(3L, 4L)), wrnMess)
+## Rational removed per CRAN suggestion 2023-07-20
 
 # Test consecutive unchanging check and message
 fn <- function(x) exp(x) - 1

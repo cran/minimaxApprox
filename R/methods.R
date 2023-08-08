@@ -1,3 +1,6 @@
+# Copyright Avraham Adler (c) 2023
+# SPDX-License-Identifier: MPL-2.0+
+
 # Print method (hide i and basis/x but leave in list and not in attribute)
 print.minimaxApprox <- function(x, round = 6L, ...) {
   if (attr(x, "type") == "Polynomial") {
@@ -50,11 +53,11 @@ plot.minimaxApprox <- function(x, y = NULL, ...) {
   ylab <- if (relErr) "Relative Error" else "Absolute Error"
 
   # Default y-axis limits
-  ybnd <- max(x$EE, x$OE)
-  if ("ylim" %in% names(args)) {
-    ylim <- args$ylim
+  ylim <- if ("ylim" %in% names(args)) { # nolint
+    args$ylim
   } else {
-    ylim <- c(-ybnd, ybnd)
+    ybnd <- max(x$EE, x$OE)
+    c(-ybnd, ybnd)
   }
 
   plot(z, zz, type = "l", xlab = "x", ylab = ylab, ...)

@@ -1,12 +1,12 @@
 <!-- badges: start -->
 [![](https://www.r-pkg.org/badges/version-last-release/minimaxApprox)](https://cran.r-project.org/package=minimaxApprox)
 [![](http://cranlogs.r-pkg.org/badges/last-month/minimaxApprox)](https://cran.r-project.org/package=minimaxApprox)
- [![R-CMD-check](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/minimaxApprox)](https://cran.r-project.org/package=minimaxApprox)
+[![R-CMD-check](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/aadler/minimaxApprox/branch/master/graph/badge.svg)](https://app.codecov.io/gh/aadler/minimaxApprox?branch=master)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7580/badge)](https://bestpractices.coreinfrastructure.org/projects/7580)
 [![DOI](https://zenodo.org/badge/660219797.svg)](https://zenodo.org/badge/latestdoi/660219797)
 <!-- badges: end -->
-
 # minimaxApprox
 **minimaxApprox** is an `R` package which implements the algorithm of Remez
 (1962) for polynomial minimax approximation and of Cody et al. (1968)
@@ -18,7 +18,7 @@ If you use the package, please cite it as:
   Adler A (2023). minimaxApprox: Implementation of Remez Algorithm for
   Polynomial and Rational Function Approximation.
   [doi: 10.5281/zenodo.8158855](https://doi.org/10.5281/zenodo.8158855),
-  R package version 0.0.2, https://CRAN.R-project.org/package=minimaxApprox
+  R package version 0.1.0, https://CRAN.R-project.org/package=minimaxApprox
 
 A BibTeX entry for LaTeX users is:
 
@@ -29,7 +29,7 @@ A BibTeX entry for LaTeX users is:
     year = {2023},
     url = {https://CRAN.R-project.org/package=minimaxApprox},
     doi = {10.5281/zenodo.8158855},
-    note = {R package version 0.0.2},
+    note = {R package version 0.1.0},
   }
 ```
 
@@ -87,8 +87,8 @@ the lead maintainer.
  * Research
  [barycentric representations](https://www.chebfun.org/publications/remez.pdf)
  to consider if possible to implement in R.
- * Alternatively, research if possible to use [Rmpfr](https://CRAN.R-project.org/package=Rmpfr) package for increased
- precision.
+ * Alternatively, research if possible to use [Rmpfr](https://CRAN.R-project.org/package=Rmpfr)
+ package for increased precision.
 
 ### Minor
 
@@ -98,7 +98,7 @@ the lead maintainer.
 ### Expectations
 This package is a calculation engine and requires no secrets or private
 information. It is checked for memory leaks prior to releases to CRAN using
-ASAN/UBSBAN. Dissemination is handled by CRAN. Bugs are reported via the tracker
+ASAN/UBSAN. Dissemination is handled by CRAN. Bugs are reported via the tracker
 and handled as soon as possible.
 
 ### Assurance

@@ -1,3 +1,6 @@
+# Copyright Avraham Adler (c) 2023
+# SPDX-License-Identifier: MPL-2.0+
+
 # Master user-exposed function
 minimaxApprox <- function(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
                           opts = list()) {
@@ -74,18 +77,17 @@ minimaxApprox <- function(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
 
   if (mmA$unchanged && !mmA$converged) {
     warning("Convergence to requested ratio and tolerance not achieved in ",
-            mmA$i, " iterations.\n", mmA$unchanging_i, " successive calculated ",
-            "errors were too close to each other to warrant further ",
-            "iterations.\nThe ratio is ", fC(mmA$mxae / mmA$expe), " times ",
-            "expected and the difference is ", fC(abs(mmA$mxae - mmA$expe)),
-            " from the expected.")
+            mmA$i, " iterations.\n", mmA$unchanging_i, " successive ",
+            "calculated errors were too close to each other to warrant ",
+            "further iterations.\nThe ratio is ", fC(mmA$mxae / mmA$expe),
+            " times expected and the difference is ",
+            fC(abs(mmA$mxae - mmA$expe)), " from the expected.")
     gotWarning <- TRUE
   }
 
   if (mmA$mxae < 10 * .Machine$double.eps) {
     warning("All errors very near machine double precision. The solution may ",
-            "not be optimal but should be best given the desired precision ",
-            "and floating point limitations. Try a lower degree if needed.")
+            "not be optimal given floating point limitations.")
     gotWarning <- TRUE
   }
 

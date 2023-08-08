@@ -28,9 +28,20 @@ callFun <- function(fn, x) {
 isOscil <- function(x) all(abs(diff(sign(x))) == 2)
 
 # Calculate the polynomial approximation. Use in numer & denom for rationals
-polyCalc <- function(x, a)  {
-  drop(vanderMat(x, length(a) - 1L) %*% a)
-}
+# Use Horner's method. This version is fastest of few tried (recursion, Reduce,
+# etc.)
+# polyCalc <- function(x, a) {
+#   ret <- double(length(x))
+#   # Using fastest sequence constructor despite it not checking for empty vector
+#   # as that should not be possible.
+#   for (i in length(a):1L) {
+#     ret <- (ret * x) + a[i]
+#   }
+#   ret
+# }
+
+# Using Compensated Horner Scheme of Langlois et al. (2006)
+polyCalc <- function(x, a) compensatedHorner(x, a)
 
 # Function to calculate value of minimax approximation at x given a & b
 evalFunc <- function(x, R) {
@@ -43,12 +54,12 @@ evalFunc <- function(x, R) {
 
 # Function to calculate error between known and calculated values
 remErr <- function(x, R, fn, relErr) {
-    if (relErr) {
-      y <- callFun(fn, x)
-      (evalFunc(x, R) - y) / y
-    } else {
-      evalFunc(x, R) - callFun(fn, x)
-    }
+  if (relErr) {
+    y <- callFun(fn, x)
+    (evalFunc(x, R) - y) / y
+  } else {
+    evalFunc(x, R) - callFun(fn, x)
+  }
 }
 
 # Function to identify roots of the error equation for use as bounds in finding
@@ -108,11 +119,9 @@ switchX <- function(r, l, u, R, fn, relErr) {
     }
 
     # Test for 0 value at function if relative error
-    if (relErr) {
-      if (callFun(fn, x[i]) == 0) {
-        stop("Algorithm is choosing basis point where functional value is ",
-             "0. Please approximate using absolute, and not relative, error.")
-      }
+    if (relErr && callFun(fn, x[i]) == 0) {
+      stop("Algorithm is choosing basis point where functional value is ",
+           "0. Please approximate using absolute, and not relative, error.")
     }
 
     # Flip maximize
