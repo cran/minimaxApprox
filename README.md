@@ -5,8 +5,9 @@
 [![R-CMD-check](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aadler/minimaxApprox/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/aadler/minimaxApprox/branch/master/graph/badge.svg)](https://app.codecov.io/gh/aadler/minimaxApprox?branch=master)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7580/badge)](https://bestpractices.coreinfrastructure.org/projects/7580)
-[![DOI](https://zenodo.org/badge/660219797.svg)](https://zenodo.org/badge/latestdoi/660219797)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8158855.svg)](https://doi.org/10.5281/zenodo.8158855)
 <!-- badges: end -->
+
 # minimaxApprox
 **minimaxApprox** is an `R` package which implements the algorithm of Remez
 (1962) for polynomial minimax approximation and of Cody et al. (1968)
@@ -18,7 +19,7 @@ If you use the package, please cite it as:
   Adler A (2023). minimaxApprox: Implementation of Remez Algorithm for
   Polynomial and Rational Function Approximation.
   [doi: 10.5281/zenodo.8158855](https://doi.org/10.5281/zenodo.8158855),
-  R package version 0.1.0, https://CRAN.R-project.org/package=minimaxApprox
+  R package version 0.2.0, https://CRAN.R-project.org/package=minimaxApprox
 
 A BibTeX entry for LaTeX users is:
 
@@ -29,7 +30,7 @@ A BibTeX entry for LaTeX users is:
     year = {2023},
     url = {https://CRAN.R-project.org/package=minimaxApprox},
     doi = {10.5281/zenodo.8158855},
-    note = {R package version 0.1.0},
+    note = {R package version 0.2.0},
   }
 ```
 
@@ -43,6 +44,11 @@ Please ensure that all contributions comply with both
 
 ### Versioning
 This project attempts to follow [Semantic Versioning](https://semver.org/).
+However, so long as the package remains in its experimental development
+state---noted by a 0 major version---the API may change without incrementing the
+major version. Please read the development notes
+([NEWS](https://CRAN.R-project.org/package=minimaxApprox/news.html)) carefully.
+Breaking changes will be prefaced by "**Breaking:**".
 
 ### Changelog
 This project attempts to follow the changelog system at
@@ -82,13 +88,15 @@ the lead maintainer.
 ## Roadmap
 ### Major
 
- * Consider moving some calculations into a compiled language (C, Fortran, C++)
- for efficiency.
+ * Research if the "n + 1" check implemented for polynomial approximation can be
+ applied to numerator and denominator of rational approximation.
  * Research
  [barycentric representations](https://www.chebfun.org/publications/remez.pdf)
  to consider if possible to implement in R.
  * Alternatively, research if possible to use [Rmpfr](https://CRAN.R-project.org/package=Rmpfr)
  package for increased precision.
+ * Alternatively, consider using Chebyshev polynomials instead of monomials as
+ basis for linear equation solutions.
 
 ### Minor
 

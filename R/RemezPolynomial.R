@@ -1,31 +1,34 @@
 # Copyright Avraham Adler (c) 2023
 # SPDX-License-Identifier: MPL-2.0+
 
-# Function to create augmented Vandermonde matrix for polynomial approximation
+# Function to create augmented Vandermonde matrix for polynomial approximation.
 polyMat <- function(x, y, relErr) {
   n <- length(x)
   A <- vanderMat(x, n - 2L)
   altSgn <- (-1) ^ (seq_len(n) - 1L)
-  # For relative error, need to weight the E by f(x)
+  # For relative error, need to weight the E by f(x).
   if (relErr) altSgn <- altSgn * y
   cbind(A, altSgn, deparse.level = 0L)
 }
 
-# Function to calculate coefficients given matrix and known values
-polyCoeffs <- function(x, fn, relErr) {
+# Function to calculate coefficients given matrix and known values.
+polyCoeffs <- function(x, fn, relErr, l, u, zt) {
   y <- callFun(fn, x)
-  PP <- solve(polyMat(x, y, relErr), y)
-  list(a = PP[-length(PP)], E = PP[length(PP)])
+  P <- polyMat(x, y, relErr)
+  PP <- tryCatch(solve(P, y),
+                 error = function(cond) simpleError(trimws(cond$message)))
+  if (inherits(PP, "simpleError")) PP <- qr.solve(P, y, tol = 1e-14)
+  list(a = checkIrrelevant(PP[-length(PP)], l, u, zt), E = PP[length(PP)])
 }
 
-# Main function to calculate and return the minimax polynomial approximation
+# Main function to calculate and return the minimax polynomial approximation.
 remPoly <- function(fn, lower, upper, degree, relErr, opts) {
 
   # Initial x's
   x <- chebNodes(degree + 2L, lower, upper)
 
   # Initial Polynomial Guess
-  PP <- polyCoeffs(x, fn, relErr)
+  PP <- polyCoeffs(x, fn, relErr, lower, upper, opts$ztol)
   errs_last <- remErr(x, PP, fn, relErr)
   converged <- FALSE
   unchanged <- FALSE
@@ -37,7 +40,7 @@ remPoly <- function(fn, lower, upper, degree, relErr, opts) {
     i <- i + 1L
     r <- findRoots(x, PP, fn, relErr)
     x <- switchX(r, lower, upper, PP, fn, relErr)
-    PP <- polyCoeffs(x, fn, relErr)
+    PP <- polyCoeffs(x, fn, relErr, lower, upper, opts$ztol)
     errs <- remErr(x, PP, fn, relErr)
     mxae <- max(abs(errs))
     expe <- abs(PP$E)
@@ -53,7 +56,7 @@ remPoly <- function(fn, lower, upper, degree, relErr, opts) {
     }
 
     # Check that solution is evolving. If solution is not evolving then further
-    # iterations will just not help.
+    # iterations will not help.
     if (all(errs / errs_last <= opts$convrat) ||
           all(abs(errs - errs_last) <= opts$tol)) {
       unchanging_i <- unchanging_i + 1L

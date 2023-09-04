@@ -6,6 +6,53 @@
 
 \title{NEWS file for the minimaxApprox package}
 
+\section{Developmental Note: Version 0.0.0+}{
+  \itemize{
+    \item So long as the package remains in its experimental development
+    state---noted by a 0 major version---the API may change without incrementing
+    the major version. Please read these development notes carefully. Breaking
+    changes will be prefaced by \dQuote{\strong{Breaking:}}.
+  }
+}
+
+\section{Version 0.2.0 (2023-09-04)}{
+  \subsection{Added}{
+    \itemize{
+      \item When the polynomial algorithm fails with a singular matrix error
+      for degree \code{n}, it will now look for a polynomial of degree
+      \code{n + 1}. If found, \strong{and} the contribution of that coefficient
+      is less than the new option \code{tailtol} (default \code{1e-10}), it will
+      return the found polynomial without the uppermost coefficient---which is
+      effectively 0. It will message the user to that effect. Passing
+      \code{NULL} skips the test. (see
+      \href{https://github.com/aadler/minimaxApprox/issues/2}{Issue 2} with
+      thanks to \href{https://github.com/hwborchers}{Hans W. Borchers}).
+      \item New option \code{ztol} which acts similarly to
+      \code{\link{zapsmall}} in that it will zero out coefficient values---both
+      polynomial and rational---whose contributions are \eqn{\le} \code{ztol}
+      at each step of the iteration. The default, \code{NULL}, skips the test.
+    }
+  }
+  \subsection{Changed}{
+    \itemize{
+      \item Ported Compensated Horner Scheme algorithms to C for speed. The
+      algorithms are now roughly 10x faster.
+      \item Changed linear solution algorithm to use \code{qr.solve} when the
+      default \code{solve} fails with a singular matrix issue. This \emph{may}
+      allow for higher degree polynomials in certain cases.
+      \item \strong{Breaking:} Changed name of \sQuote{\code{round}} parameter
+      in print method to \sQuote{\code{digits}} to prevent any confusion with
+      base function \code{round}.
+      \item Updated unit tests.
+      \item Cleaned up and updated some documentation and various messages.
+      \item Tightened tolerances and cleaned up some internal functions.
+      \item Added \file{LICENSE} to \file{.Rbuildignore} and removed from
+      \file{DESCRIPTION} as suggested on
+      \href{https://stat.ethz.ch/pipermail/r-package-devel/2023q3/009417.html}{R-pkg-devel}.
+    }
+  }
+}
+
 \section{Version 0.1.0 (2023-08-07)}{
   \subsection{Changed}{
     \itemize{

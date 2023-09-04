@@ -34,9 +34,9 @@ minimaxApprox(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
     \emph{absolute} error.}
     \item{xi}{numeric; For rational approximation, a vector of initial points of
     the correct length---\eqn{\sum(\code{degree}) + 2}{sum(degree) + 2}. If
-    missing, approximation will use the appropriate Chebyshev nodes. Polynomial
-    approximation \strong{always} uses Chebyshev nodes and will ignore \code{xi}
-    with a message.}
+    missing, the approximation will use the appropriate Chebyshev nodes.
+    Polynomial approximation \strong{always} uses Chebyshev nodes and will
+    ignore \code{xi} with a message.}
     \item{opts}{\link{list}; Configuration options including:
         \itemize{
             \item \code{maxiter}: integer; The maximum number of iterations to
@@ -50,47 +50,83 @@ minimaxApprox(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
             \code{maxiter}.
             \item \code{showProgress}: logical; If \code{TRUE} will print error
             values at each iteration.
-             \item \code{convRatio}: numeric; The convergence ratio tolerance.
-             Defaults to \code{1+1e-9}. See \strong{Details}.
-             \item \code{tol}: numeric; The absolute difference tolerance.
-             Defaults to \code{1e-14}. See \strong{Details}.
+            \item \code{convRatio}: numeric; The convergence ratio tolerance.
+            Defaults to \eqn{1 + 1 \times 10^{-9}}{1+1e-9}. See \strong{Details}.
+            \item \code{tol}: numeric; The absolute difference tolerance.
+            Defaults to \eqn{1 \times 10^{-14}}{1e-14}. See \strong{Details}.
+            \item \code{tailtol}: numeric; The tolerance of the coefficient of
+            the largest power of \code{x} to be ignored when performing the
+            polynomial approximation a second time. Defaults to the smaller of
+            \eqn{1\times 10^{-10}}{1e-10} or \eqn{\frac{\code{upper} -
+            \code{lower}}{10^6}}{(\code{upper} - \code{upper}) / 1e6}. Set to
+            \code{NULL} to skip the \code{degree + 1} check completely. See
+            \strong{Details}.
+            \item \code{ztol}: numeric; The tolerance for each polynomial or
+            rational numerator or denominator coefficient's contribution to
+            \strong{not} to be set to 0. Similar to polynomial \code{tailtol}
+            but applied at each step of the algorithm. Defaults to
+            \code{NULL} which leaves all coefficients as they are regardless
+            of magnitude.
         }
     }
 }
 
 \details{
+\subsection{Convergence}{
 The function implements the Remez algorithm using linear approximation, chiefly
 as described by Cody et al. (1968). Convergence is considered achieved when all
 three of the following criteria are met:
     \enumerate{
         \item The observed error magnitudes are within tolerance of the expected
-         error (Distance Test).
-        \item The observed error magnitudes are within tolerance of each other
-        (Magnitude Test).
-        \item The observed error signs oscillate (Oscillating Test).
+         error---the \strong{Distance Test}.
+        \item The observed error magnitudes are within tolerance of each
+        other---the \strong{Magnitude Test}.
+        \item The observed error signs oscillate---the
+        \strong{Oscillation Test}.
     }
 \dQuote{Within tolerance} can be met in one of two ways:
     \enumerate{
         \item The difference between the absolute magnitudes is less than or
         equal to \code{tol}.
-        \item The ratio between the larger and smaller is less than or equal to
-        \code{convRatio}.
+        \item The ratio between the absolute magnitudes of the larger and
+        smaller is less than or equal to \code{convRatio}.
     }
 
-For efficiency, the Distance Test is taken between the absolute value of the
-largest observed error and the absolute value of the expected error. Similarly,
-the Magnitude Test is taken between the absolute value of the largest observed
-error and the absolute value of the smallest observed error. Both the Magnitude
-Test and the Distance Test can be passed by \strong{either} being within
-\code{tol} or \code{convRatio} as described above.
-
-When too high of a degree is requested for the tolerance of the algorithm, it
-often fails with a singular matrix error.
-
-The polynomials are evaluated using the Compensated Horner Scheme of Langlois et
-al. (2006) to enhance both stability and precision at the expense of some speed.
+For efficiency, the \strong{Distance Test} is taken between the absolute value
+of the largest observed error and the absolute value of the expected error.
+Similarly, the \strong{Magnitude Test} is taken between the absolute value of
+the largest observed error and the absolute value of the smallest observed
+error. Both tests can be passed by \strong{either} being within \code{tol} or
+\code{convRatio} as described above.
 }
-
+\subsection{Polynomial Evaluation}{
+The polynomials are evaluated using the Compensated Horner Scheme of Langlois et
+al. (2006) to enhance both stability and precision.
+}
+\subsection{Polynomial Algorithm \dQuote{Singular Error} Response}{
+When too high of a degree is requested for the tolerance of the algorithm, it
+often fails with a singular matrix error. In this case, for the polynomial
+version, the algorithm will try looking for an approximation of degree
+\code{n + 1}. If it finds one, \strong{and} the contribution of that coefficient
+to the approximation is \eqn{\le} \code{tailtol}, it will ignore that
+coefficient and return the resulting degree \code{n} polynomial, as the largest
+coefficient is effectively 0. The contribution is measured by multiplying that
+coefficient by the endpoint with the larger absolute magnitude raised to the
+\code{n + 1} power. This is done to prevent errors in cases where a very small
+coefficient is found on a range with very large absolute values and the
+resulting contribution to the approximation is \strong{not} \emph{de minimis}.
+Setting \code{tailtol} to \code{NULL} will skip the \code{n + 1} test
+completely.
+}
+\subsection{Close-to-Zero Tolerance}{
+For each step of the algorithms' iterations, the contribution of the found
+coefficient to the total sum (as measured in the above section) is compared to
+the \code{ztol} option. When less than or equal to \code{ztol}, that coefficient
+is set to 0. Setting \code{ztol} to \code{NULL} skips the test completely. For
+intervals near or containing zero, setting this option to anything other than
+\code{NULL} may result in either non-convergence or poorer results.
+}
+}
 \value{
 \code{minimaxApprox} returns an object of \link{class} \code{"minimaxApprox"}
 which inherits from the class \link{list}.
@@ -146,20 +182,9 @@ means that the approximations are at best slightly worse. Research proceeds on
 more precise, stable, and efficient implementations. So long as the package
 remains in an experimental state---noted by a 0 major version---the API may
 change at any time.
-
-\subsection{Future Development Ideas}{
-Future developments may include moving the evaluation into a compiled language
-to take advantage of the speed and precision gains of using fused-multiply-add
-(\acronym{FMA}) instructions, possible use of arbitrary-precision math, or
-using barycentric representations instead of monomials.
-}
 }
 
-\seealso{
-\code{\link{minimaxEval}} for a convenience function to calculate approximation
-values and \code{\link[Pade:Pade]{Pade}} for a function to calculate
-\enc{Padé}{Pade} coefficients given suitable Taylor series coefficients.
-}
+\seealso{\code{\link{minimaxEval}}, \code{\link{minimaxErr}}}
 
 \examples{
 minimaxApprox(exp, 0, 1, 5)                              # Built-in & polynomial

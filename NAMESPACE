@@ -1,9 +1,18 @@
-export(minimaxApprox, minimaxEval, print.minimaxApprox, plot.minimaxApprox,
-       coef.minimaxApprox)
+useDynLib(minimaxApprox, .registration = TRUE)
 
+# Imports
 importFrom("stats", "optimize", "uniroot")
 importFrom("graphics", "abline", "legend", "points")
 
+# Exports
+export(minimaxApprox,
+       minimaxEval,
+       minimaxErr,
+       print.minimaxApprox,
+       plot.minimaxApprox,
+       coef.minimaxApprox)
+
+# Methods
 S3method(print, minimaxApprox)
 S3method(plot, minimaxApprox)
 S3method(coef, minimaxApprox)

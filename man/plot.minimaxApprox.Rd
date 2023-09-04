@@ -9,7 +9,7 @@
 
 \description{
 Produces a plot of the error of the \code{"minimaxApprox"} object, highlighting
-the basis points and error bounds.
+the basis points and the error bounds.
 }
 
 \usage{\method{plot}{minimaxApprox}(x, y, \dots)}
@@ -18,7 +18,7 @@ the basis points and error bounds.
     \item{y}{Ignored. In call as required by \R in
     \href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Writing R Extensions:chapter 7}.}
     \item{\dots}{Further arguments to plot. Specifically to pass \code{ylim} to
-    allow zooming in or out.}
+    allow for zooming in or out.}
 }
 
 \value{No return value; called for side effects.}
