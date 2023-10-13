@@ -15,12 +15,30 @@
   }
 }
 
+\section{Version 0.2.2 (2023-10-12)}{
+  \subsection{Changed}{
+    \itemize{
+      \item Refactored \file{README} to split out security and contributions
+      wordings to their own respective files and link the citation to the file
+      on \acronym{CRAN}.
+      \item Changed some tests to be more acceptable for \acronym{CRAN}.
+    }
+  }
+  \subsection{Added}{
+    \itemize{
+      \item Added \code{LTO_OPT} to \file{Makevars} and \code{UseLTO} to
+      \file{DESCRIPTION}.
+    }
+  }
+}
+
 \section{Version 0.2.1 (2023-09-04)}{
   \subsection{Changed}{
     \itemize{
       \item Test for calculating polynomial of degree \code{n + 1} when one of
-      degree \code{n} fails, while passing both R Mac Builder and Github's Mac
-      platform, failed on CRAN's testbed. So test is not run for Mac.
+      degree \code{n} fails, while passing both R \acronym{Mac} Builder and
+      Github's \acronym{Mac} platform, failed on \acronym{CRAN}'s testbed.
+      So test is no longer run for \acronym{Mac} on \acronym{CRAN}.
     }
   }
 }

@@ -99,10 +99,10 @@ minimaxApprox <- function(fn, lower, upper, degree, relErr = FALSE, xi = NULL,
                           "of degree", degree, "but successfully completed",
                           "when looking for a polynomial of degree",
                           degree + 1L, "with the largest coefficient's",
-                          "contribution to the approximation <=",
-                          paste0(opts$tailtol, ":"), "the tailtol option. The",
-                          "result is a polynomial of length", degree, "as the",
-                          "uppermost coefficient is effectively 0.")
+                          "contribution to the approximation <= the tailtol",
+                          "option. The result is a polynomial of length",
+                          degree, "as the uppermost coefficient is effectively",
+                          "0.")
             mmA$a <- mmA$a[-length(mmA$a)]
             message(mess)
           } else {
