@@ -79,6 +79,7 @@ switchX <- function(r, l, u, R, fn, relErr) {
   bottoms <- c(l, r)
   tops <- c(r, u)
   x <- double(length(bottoms))
+  attr(x, "ZeroBasis") <- FALSE
   maximize <- sign(remErr(l, R, fn, relErr)) == 1
   for (i in seq_along(x)) {
     intv <- c(bottoms[i], tops[i])
@@ -111,8 +112,20 @@ switchX <- function(r, l, u, R, fn, relErr) {
 
     # Test for 0 value at function if relative error
     if (relErr && callFun(fn, x[i]) == 0) {
-      stop("Algorithm is choosing basis point where functional value is ",
-           "0. Please approximate using absolute---not relative---error.")
+      attr(x, "ZeroBasis") <- TRUE
+      if (x[i] == l) {
+        x[i] <- x[i] + 1e-12
+      } else if (x[i] == u) {
+        x[i] <- x[i] - 1e-12
+      } else {
+        xreplace <- c(x[i] - 1e-12, x[i] + 1e-12)
+        fnreplace <- callFun(fn, xreplace)
+        if (maximize) {
+          x[i] <- xreplace[which.max(fnreplace)]
+        } else {
+          x[i] <- xreplace[which.min(fnreplace)]
+        }
+      }
     }
 
     # Flip maximize.
@@ -126,12 +139,16 @@ isConverged <- function(errs, expe, convrat, tol) {
   aerrs <- abs(errs)
   mxae <- max(aerrs)
   mnae <- min(aerrs)
+  a_mxa_exp <- abs(mxae - expe)
+  mx_mn <- mxae - mnae
 
   # Check observed errors are close enough to expected by ratio or tolerance.
-  errDistance <- mxae / expe <= convrat || abs(mxae - expe) <= tol
+  errDistance <- mxae / expe <= convrat ||
+    (a_mxa_exp <= tol && a_mxa_exp > .Machine$double.eps)
 
   # Check observed errors are close enough to each other by ratio or tolerance.
-  errMagnitude <- mxae / mnae <= convrat || mxae - mnae <= tol
+  errMagnitude <- mxae / mnae <= convrat ||
+    (mx_mn <= tol && mx_mn > .Machine$double.eps)
 
   # Converged if magnitude and distance are close and error oscillates in sign.
   isOscil(errs) && errDistance && errMagnitude

@@ -15,6 +15,35 @@
   }
 }
 
+\section{Version 0.3.0 (2024-01-25)}{
+  \subsection{Changed}{
+    \itemize{
+      \item \strong{Breaking:} More descriptive names in return object. See the
+      \strong{Value} section of \code{help("minimaxApprox")} for details.
+      \item \strong{Breaking:} When using relative error for convergence and one
+      of the basis points is 0, instead of stopping with an error, the algorithm
+      will perturb that basis point by \code{1e-12} in the appropriate direction
+      and proceed with a warning.
+      \item \strong{Breaking:} Forced convergence to look \emph{only} at the
+      ratio if the difference between tested values is \eqn{\le}{<=}
+      \code{.Machine$double.eps}.
+      \item \strong{Breaking:} Increased default for \code{conviter} from 10 to
+      30 as tests on some values now need more iterations to acheive ratio
+      convergence given a distance \eqn{\le}{<=} \code{.Machine$double.eps}.
+    }
+  }
+  \subsection{Added}{
+    \itemize{
+      \item Added unit tests for additional functionality.
+    }
+  }
+  \subsection{Fixed}{
+    \itemize{
+      \item Fixed a misnamed option value in some unit tests.
+    }
+  }
+}
+
 \section{Version 0.2.2 (2023-10-12)}{
   \subsection{Changed}{
     \itemize{
