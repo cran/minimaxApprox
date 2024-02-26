@@ -2,8 +2,8 @@ Package: minimaxApprox
 Type: Package
 Title: Implementation of Remez Algorithm for Polynomial and Rational
         Function Approximation
-Version: 0.3.0
-Date: 2024-01-25
+Version: 0.4.0
+Date: 2024-02-26
 Authors@R: person(given="Avraham", family="Adler",role=c("aut", "cre", "cph"),
     email="Avraham.Adler@gmail.com", comment = c(ORCID = "0000-0002-3039-0703"))
 Description: Implements the algorithm of Remez (1962) for polynomial minimax
@@ -18,8 +18,8 @@ ByteCompile: yes
 NeedsCompilation: yes
 Encoding: UTF-8
 UseLTO: yes
-Packaged: 2024-01-25 03:41:01 UTC; Parents
+Packaged: 2024-02-26 08:57:48 UTC; AvrahamAdler
 Author: Avraham Adler [aut, cre, cph] (<https://orcid.org/0000-0002-3039-0703>)
 Maintainer: Avraham Adler <Avraham.Adler@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-01-25 10:40:02 UTC
+Date/Publication: 2024-02-26 09:20:05 UTC
