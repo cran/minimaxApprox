@@ -1,4 +1,4 @@
-8414fade716282011508744b9a13694a *DESCRIPTION
+f2e5a98d828cb2e4dd88ce77f7b7e88e *DESCRIPTION
 e45a5a34d7a9fe8e231d826b80da5594 *NAMESPACE
 a5588073dbe47e9df722af5f170ddb37 *R/Chebyshev.R
 ea9648b1794b1c9409f051a0eaf57ae8 *R/MiniMaxApprox.R
@@ -8,11 +8,11 @@ f7e58d99b2bf59102193fd82dd4c741f *R/RemezPolynomial.R
 f4815f6b4a9e3b4e7446ffcd91820fac *R/methods.R
 47b33742759b507df5137bb83d2a8835 *R/shared.R
 029ea289d23e466591663b00a54142af *README.md
-2423ba9ba5f487a106aa41fccfc8da6d *build/partial.rdb
-971e9b94d4ee80e7b6086d9aabe1d4f1 *inst/CITATION
-bbeca04d074e8ea8ae3323a2e9f7a9ec *inst/NEWS.Rd
+a93c96fa61162666a5803c8803f2b0cf *build/partial.rdb
+53cf5b953679f5cb706708b03ba418e3 *inst/CITATION
+c12d1052e159051191349a09cc65842a *inst/NEWS.Rd
 1fa6f3f9866efce5c0a8cdd042e48890 *inst/tinytest/test_Chebyshev.R
-d754a957fa217c3ca543eb4b124f6616 *inst/tinytest/test_MiniMaxApprox.R
+19d07ca9244762482135c96177fa31f3 *inst/tinytest/test_MiniMaxApprox.R
 844c723b89694a40681b70724c39f7b4 *inst/tinytest/test_methods.R
 b5e683866de09415740b4e374e743eaf *inst/tinytest/test_monomial.R
 441c6ddb593a5fbfdce40e9022269cb9 *inst/tinytest/test_polynomial.R
